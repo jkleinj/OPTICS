@@ -1,0 +1,183 @@
+
+OPTICS : single-linkage point ordering
+--------------------------------------
+OPTICS is an algorithm to detect the single-linkage structure in data
+collections. The algorithm detects, for each point, the number of 
+neighbours within a pre-defined radius 'epsilon' and, if the number
+is larger than the predefined threshold 'minPoints', proceeds with the
+closest neighbour point, otherwise with the next point in the list of
+unprocessed points.
+OPTICS does not provide a clustering structure per se, but the
+point ordering together with the closest-neighbour information can be
+used to extract a cluster structure. The algorithm is useful for large
+data sets with overlapping areas of varying point density.
+
+The code has been tested to work for >300000 data points.
+
+The algorithm requires only two input para-
+meters: a neighbourhood radius (epsilon) and a minimum
+number of neighbour points (MinPts). If we set epsilon to
+the largest distance in the dataset then each point is reachable 
+and this parameter has no influence on the results.
+Briefly, the algorithm starts at a random data point, cal-
+culates the distance to all points within the neighbourhood
+radius (epsilon) and, if at least a minimal number of points
+(MinPts) is encountered, it records the nearest neighbour
+distance (Reachability Distance) and the smallest radius
+that encircles MinPts objects (Core Distance). If less than
+MinPts points fall within epsilon, the point is considered as
+noise. The algorithm repeats the same procedure for the
+nearest neighbour point and proceeds iteratively until all
+data points have been visited, thereby generating an
+ordered list. Setting epsilon to the largest distance implies that none of
+the fragments is labelled 'noise' and each is included in
+one cluster at least. This choice allows to scan afterwards
+for clusters at any density.
+The ordered list of Reachability Distances (RDs) can be drawn as 
+a comprehensive nearest neighbour distance plot (called Reachability Plot).
+
+The output files are as follows:
+- file 'output.dat' contains the ordered list of input data;
+  given are their location 'dataID' in the input data file, core distance 'CD' and 
+  reachability distance 'RD'.
+- file 'cluster.dat' contains the cluster structure of the data;
+  given are the cluster identifier 'id', the id of the 'parent' cluster,
+  'start' and 'end' in the ordered list and 'size' of the cluster,
+  its smallest core distance 'minCD' and the identifier 'minCDid' of that point.
+- file 'center.dat' contains the cluster centres;
+  given are the centre's location 'index', identifier in the ordered list 'order',
+  cluster identifier 'clusterID', core distance 'CD', 
+  reachability distance 'RD' and coordinates 'x' 'y' 'z'. 
+
+References
+----------
+Users publishing results obtained with the program should acknowledge its use by citation:
+- Pandini, A, Fornili, A, Kleinjung, J
+Structural alphabets derived from attractors in conformational space.
+BMC Bioinformatics 11:97 (20 February), 2010.
+
+Other references:
+- Ankerst M, Breunig MM, Kriegel HP, Sander J: OPTICS: Ordering Points 
+To Identify the Clustering Structure. 
+SIGMOD Proceedings ACM SIGMOD International Conference on Management of Data, 
+June 1-3, 1999, Philadelphia, Pennsylvania, USA ACM PressDelis A, Faloutsos C, 
+Ghandeharizadeh S 1999, 49-60.
+
+- Daszykowski M, Walczak B, Massart DL: Looking for natural patterns in analytical data. 
+2. Tracing local density with OPTICS. 
+Journal of chemical information and computer sciences 2002, 42(3):500-507.
+
+
+Install / Uninstall
+-------------------
+Please read the general 'INSTALL' instructions.
+
+There are several versions of the program that are invoked 
+upon compilation with 'configure --enable-data-<version>':
+- optics_ang
+  for input data in angle coordinates
+  compile using the command './configure --enable-data-ang'
+- optics_str
+  for input data in string format 
+  compile using the command './configure --enable-data-str'
+- optics_vec
+  for input data in vector (of arbitrary length) format
+  compile using the command './configure --enable-data-vec'
+- optics_xyz 
+  for input data in xyz (Cartesian) coordinates
+  compile using the command './configure --enable-data-xyz'
+- optics_dist 
+  for input data as distance matrix
+  compile using the command './configure --enable-data-dist'
+
+The 'optics_ang' program requires the 'pcre' pattern matching library.
+See http://www.pcre.org/ for installation options.
+
+Run 'configure --help' for more information.
+For documentation execute 'doxygen doxygen.cfg' in the 'src' directory.
+Documentation files are created in 'doc/html' and 'doc/latex'.
+The latex documentation is completed by executing 'make pdf' in the
+'doc/latex' directory, which creates 'refman.ps' and 'refman.pdf'.
+
+
+Usage
+-----
+optics: perform OPTICS single-linkage point ordering
+             (C) 2008-2015 by Jens Kleinjung and Alessandro Pandini
+             This program is free software.
+
+optics [--datafile ...] [OPTIONS ...]
+      --datafile <filename>                (mode: mandatory, type: char,  default: input.dat)
+      --outputfile <filename>              (mode: optional,  type: char,  default: output.dat)
+      --clusterfile <filename>             (mode: optional,  type: char,  default: cluster.dat)
+      --centerfile <filename>              (mode: optional,  type: char,  default: center.dat)
+      --uniquefile <filename>              (mode: optional,  type: char,  default: unique.dat)
+      --eps <epsilon cutoff>               (mode: optional,  type: float, default: 2.91)
+      --minpts <min number of neighbours>  (mode: optional,  type: int,   default: 1)
+      --w <window size for string version> (mode: optional,  type: int,   default: 1)
+      --silent                             (mode: optional,  no argument, default: off)
+      --cite                               (mode: optional , type: no_arg, default: off)
+      --version                            (mode: optional , type: no_arg, default: off)
+      --help
+
+	Use the configure options described in 'README Install/Uninstall'
+    to compile a specific verion.
+
+
+Input formats
+-------------
+optics_dist: The input format is a triangular matrix of distance values
+in float format. See for example the 'tests/dist.dat' file.
+The matrix contains the distances of the [i,j] point pairs
+[0,1] [0,2] [0,3] [0,4] [0,5]
+      [1,2] [1,3] [1,4] [1,5]
+            [2,3] [2,4] [2,5]
+                  [3,4] [3,5]
+                        [4,5]
+with values
+5 3 2 8 1
+  7 4 7 2
+    4 2 4
+      7 3
+        2
+
+White space and line breaks are irrelevant for the input format,
+only the order of values in the above sense must be correct.
+
+
+Return values
+-------------
+0 : Clean termination.
+1 : Error.
+
+
+-------------------------------------------------------------------------------
+Copyright (C) 2008-2015 Jens Kleinjung
+Copyright (C) 2008-2015 Alessandro Pandini
+
+The development was kindly supported by grants from the
+European Science Foundation "Frontiers of Functional Genomics" and
+"Marie-Curie Intra-European Fellowships for Career development"
+(Call identifier: PEOPLE-2007-2-1-IEF).
+Further support was given by the MRC National Institute for Medical Research.
+
+Availability
+------------
+The program is made available under the GNU Public License for academic
+scientific purposes, under the condition that proper acknowledgement
+is made to the authors of the program in publications resulting from the use
+of the program.
+
+License
+-------
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+

@@ -1,0 +1,58 @@
+
+optics: perform OPTICS clustering ($Rev: 193 $)
+             (C) 2008 by Jens Kleinjung and Alessandro Pandini
+             This program is free software. The latest GPL license applies.
+
+25 points
+Processing...   4% completed
+point 0 has 9 neighbours within 2.910000
+Processing...   8% completed
+point 9 has 8 neighbours within 2.910000
+Processing...  12% completed
+point 7 has 7 neighbours within 2.910000
+Processing...  16% completed
+point 8 has 6 neighbours within 2.910000
+Processing...  20% completed
+point 3 has 5 neighbours within 2.910000
+Processing...  24% completed
+point 2 has 4 neighbours within 2.910000
+Processing...  28% completed
+point 5 has 3 neighbours within 2.910000
+Processing...  32% completed
+point 4 has 2 neighbours within 2.910000
+Processing...  36% completed
+point 1 has 1 neighbours within 2.910000
+Processing...  40% completed
+point 6 has 0 neighbours within 2.910000
+Processing...  44% completed
+point 10 has 14 neighbours within 2.910000
+Processing...  48% completed
+point 20 has 13 neighbours within 2.910000
+Processing...  52% completed
+point 22 has 12 neighbours within 2.910000
+Processing...  56% completed
+point 15 has 11 neighbours within 2.910000
+Processing...  60% completed
+point 17 has 10 neighbours within 2.910000
+Processing...  64% completed
+point 12 has 9 neighbours within 2.910000
+Processing...  68% completed
+point 18 has 8 neighbours within 2.910000
+Processing...  72% completed
+point 13 has 7 neighbours within 2.910000
+Processing...  76% completed
+point 14 has 6 neighbours within 2.910000
+Processing...  80% completed
+point 21 has 5 neighbours within 2.910000
+Processing...  84% completed
+point 11 has 4 neighbours within 2.910000
+Processing...  88% completed
+point 16 has 3 neighbours within 2.910000
+Processing...  92% completed
+point 19 has 2 neighbours within 2.910000
+Processing...  96% completed
+point 23 has 1 neighbours within 2.910000
+Processing... 100% completed
+point 24 has 0 neighbours within 2.910000
+Sorting Completed
+Clean termination
