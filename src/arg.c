@@ -18,14 +18,14 @@ static void print_version()
 /** print header */
 static void print_header()
 {
-    fprintf(stdout, "\nOPTICS: single-linkage point ordering\n");
+    fprintf(stdout, "\nOPTICS: single-linkage point ordering\n\n");
 }
 
 /*____________________________________________________________________________*/
 /** print license */
 static void print_license()
 {
-    fprintf(stderr, "\nCopyright (C) 2008-2015 by Jens Kleinjung and Alessandro Pandini\n"
+    fprintf(stderr, "\nCopyright (C) 2008-2016 by Jens Kleinjung and Alessandro Pandini\n"
 					"You are welcome to redistribute it under certain conditions.\n"
                     "Read the COPYING file for license information.\n\n");
 }
@@ -78,8 +78,8 @@ int parse_args(int argc, char **argv, Arg *arg)
     optics_ang : input data in angle coordinates\n\
     optics_str : input data in string format\n\
     optics_vec : input data in vector (of arbitrary length) coordinates\n\
-    optics_xyz : input data in Euclidean xyz coordinates\n\
-    Use the configure options described in 'README Install/Uninstall' to compile a specific verion.\n\n";
+    optics_xyz : input data in Euclidean xyz coordinates\n\n\
+    Use the configure options described in 'README' to compile a specific verion.\n";
 
     set_defaults(arg);
 
@@ -164,8 +164,6 @@ int parse_args(int argc, char **argv, Arg *arg)
 
     if (! silent) {
 		print_header();
-		fflush(stdout);
-		print_license();
 		fflush(stdout);
 	}
 

@@ -614,6 +614,6 @@ int main(int argc, char *argv[])
 	/*____________________________________________________________________________*/
 	/** terminate */
     if (! silent)
-        fprintf(stderr, "Clean termination\n");
+        fprintf(stderr, "Clean termination\n\n");
     return 0;
 }

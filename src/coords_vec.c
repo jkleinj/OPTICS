@@ -6,6 +6,9 @@ Read the COPYING file for license information.
 
 #include "coords_vec.h"
 
+/* define distance metric: KLD, SKLD, SHD, CTD, MHD */
+#define MHD
+
 /*____________________________________________________________________________*/
 /* print header for point */
 void print_header_object(FILE *outfile) {
@@ -27,8 +30,9 @@ void print_object(FILE *outfile, Dat *dat, int index, int order, int cluster_id,
 }
 
 /*____________________________________________________________________________*/
-/* calculate distance (Kullback-Leibler) */
-float calc_dist_asym(Dat *dat, int i, int j, Arg *arg) {
+/* calculate Kullback-Leibler distance (KLD) */
+#ifdef KLD
+float calc_dist(Dat *dat, int i, int j, Arg *arg) {
 	unsigned int k;
     float dist = 0.;
 
@@ -37,10 +41,12 @@ float calc_dist_asym(Dat *dat, int i, int j, Arg *arg) {
             dist += dat->data[i][k] * log(dat->data[i][k] / dat->data[j][k]);
     return dist;
 }
+#endif
 
 /*____________________________________________________________________________*/
-/* calculate symmetrised distance (Kullback-Leibler) */
-float calc_dist_sym(Dat *dat, int i, int j, Arg *arg) {
+/* calculate symmetrised Kullback-Leibler distance (SKLD) */
+#ifdef SKLD
+float calc_dist(Dat *dat, int i, int j, Arg *arg) {
 	unsigned int k;
     float dist = 0.;
 
@@ -50,9 +56,11 @@ float calc_dist_sym(Dat *dat, int i, int j, Arg *arg) {
 					(.5 * dat->data[j][k] * log(dat->data[j][k] / dat->data[i][k]));
     return dist;
 }
+#endif
 
 /*____________________________________________________________________________*/
-/* calculate SH distance */
+/* calculate SH distance (SHD) */
+#ifdef SHD
 float calc_dist(Dat *dat, int i, int j, Arg *arg) {
 	unsigned int k;
     float dist = 0.;
@@ -73,10 +81,12 @@ float calc_dist(Dat *dat, int i, int j, Arg *arg) {
 
 	return dist;
 }
+#endif
 
 /*____________________________________________________________________________*/
-/* calculate n-dimensional Cartesian distance */
-float calc_dist_ndim(Dat *dat, int i, int j, Arg *arg) {
+/* calculate n-dimensional Cartesian distance (CTD)*/
+#ifdef CTD
+float calc_dist(Dat *dat, int i, int j, Arg *arg) {
 	unsigned int k;
     float dist = 0.;
 	float squaresum = 0.;
@@ -88,6 +98,21 @@ float calc_dist_ndim(Dat *dat, int i, int j, Arg *arg) {
 
     return dist;
 }
+#endif
+
+/*____________________________________________________________________________*/
+/* calculate n-dimensional Manhattan distance (MHD) */
+#ifdef MHD
+float calc_dist(Dat *dat, int i, int j, Arg *arg) {
+	unsigned int k;
+    float dist = 0.;
+
+	for (k = 0; k < dat->lData; ++ k)
+		dist += abs(dat->data[i][k] - dat->data[j][k]);
+
+    return dist;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 __inline__ int approximately_equal(float a, float b)
@@ -99,8 +124,7 @@ __inline__ int approximately_equal(float a, float b)
 /* read data points */
 /* Data points are expected to be an array of vectors of arbitrary length;
 	note that the maximal vector length can be adjusted (see below).
-	The vectors should contain normalised probability values and be of
-	equal length. */
+	The vectors must be of equal length. */
 int get_data(char *inFileName, Dat *dat)
 {
 	FILE *inFile = 0;
@@ -108,8 +132,7 @@ int get_data(char *inFileName, Dat *dat)
 	char line[512] = "";
 	char cpline[512] = "";
 	char *pch = 0;
-	unsigned int k, s;
-	float sum = 0.;
+	unsigned int k;
 	/* allocate memory */
 	/* The maximal vector length is defined in *data[512] 
 		in the coord_vec.h header. If you modify the 512
@@ -125,7 +148,6 @@ int get_data(char *inFileName, Dat *dat)
 	dat->nData = 0;
 	while(fgets(line, maxDim, inFile) != NULL) {
 		k = 0;
-		sum = 0.;
 		/* read line */
 #ifdef DEBUG
 		fprintf(stderr, "%s", line);
@@ -151,14 +173,6 @@ int get_data(char *inFileName, Dat *dat)
 			assert((k == dat->lData) && "Input vectors must be of equal length!\n");
 		}
 
-		/* check for normalisation */
-		for (s = 0; s < dat->lData; ++ s)
-			sum += dat->data[dat->nData][s];
-#ifdef DEBUG
-		fprintf(stderr, "%f\n", sum);
-#endif
-		assert(((int)sum == 1) && "Use normalised data!");
-
 		++ dat->nData;
 
 		/* allocate additional memory */
@@ -167,8 +181,6 @@ int get_data(char *inFileName, Dat *dat)
 			dat->data = safe_realloc(dat->data, allocated * sizeof(float [maxDim]));
 		}
 	}
-
-	assert(approximately_equal(dat->nData, 1) && "No input data found!\n");
 
 	fclose(inFile);
 	free(pch);

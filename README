@@ -49,6 +49,7 @@ The output files are as follows:
   cluster identifier 'clusterID', core distance 'CD', 
   reachability distance 'RD' and coordinates 'x' 'y' 'z'. 
 
+
 References
 ----------
 Users publishing results obtained with the program should acknowledge its use by citation:
@@ -93,6 +94,9 @@ upon compilation with 'configure --enable-data-<version>':
 The 'optics_ang' program requires the 'pcre' pattern matching library.
 See http://www.pcre.org/ for installation options.
 
+The 'optics_vec' program has several distance metrics, one of which is
+enabled by a '#define' instruction at the top of the program.
+
 Run 'configure --help' for more information.
 For documentation execute 'doxygen doxygen.cfg' in the 'src' directory.
 Documentation files are created in 'doc/html' and 'doc/latex'.
@@ -126,7 +130,24 @@ optics [--datafile ...] [OPTIONS ...]
 
 Input formats
 -------------
-optics_dist: The input format is a triangular matrix of distance values
+- optics_ang
+
+
+- optics_str
+
+
+- optics_vec
+The input format is array of vectors of arbitrary length composed
+of space separated floats.
+
+- optics_xyz 
+
+
+- optics_dist 
+
+
+- optics_dist
+The input format is a triangular matrix of distance values
 in float format. See for example the 'tests/dist.dat' file.
 The matrix contains the distances of the [i,j] point pairs
 [0,1] [0,2] [0,3] [0,4] [0,5]
@@ -152,8 +173,8 @@ Return values
 
 
 -------------------------------------------------------------------------------
-Copyright (C) 2008-2015 Jens Kleinjung
-Copyright (C) 2008-2015 Alessandro Pandini
+Copyright (C) 2008-2016 Jens Kleinjung
+Copyright (C) 2008-2016 Alessandro Pandini
 
 The development was kindly supported by grants from the
 European Science Foundation "Frontiers of Functional Genomics" and

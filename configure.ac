@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT(OPTICS, 1.2.0, jkleinj@gmail.com)
+AC_INIT(OPTICS, 1.2.0, jens@jkleinj.eu)
 AC_CONFIG_SRCDIR([src/arg.c])
 AC_CONFIG_HEADERS([src/config.h])
 

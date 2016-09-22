@@ -1,3 +1,8 @@
+- 1.2.0
+	Sat 17 Sep 13:50:42 BST 2016
+	Modified vector version: several distance metrics can be set
+	with #define.
+
 - 1.1.5
 	Tue Feb  4 13:49:01 GMT 2014
 	Bug fix in loop optics.c:170-173: missing brackets in for loop

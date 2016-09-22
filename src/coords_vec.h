@@ -26,10 +26,7 @@ typedef struct {
 /*____________________________________________________________________________*/
 /* prototypes */
 int get_data(char *inFileName, Dat *dat);
-float calc_dist_asym(Dat *dat, int i, int j, Arg *arg);
-float calc_dist_sym(Dat *dat, int i, int j, Arg *arg);
 float calc_dist(Dat *dat, int i, int j, Arg *arg);
-float calc_dist_ndim(Dat *dat, int i, int j, Arg *arg);
 void print_header_object(FILE *outfile);
 void print_object(FILE *outfile, Dat *dat, int index, int order, int cluster_id, float coreDist, float reachDist);
 
